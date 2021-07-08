@@ -19,6 +19,45 @@ xaringanExtra::use_tile_view()
 xaringanExtra::use_webcam()
 ```
 
+```{css, echo=FALSE}
+.white{
+    color: white;
+}
+
+a:link {
+  color: white;
+   text-decoration: underline;
+  font-size: 20px;
+}
+
+
+a:visited {
+  color: white;
+  text-decoration: underline;
+  font-size: 20px;
+}
+
+a:hover {
+  background-color: yellow;
+}
+
+.code{
+  background-color: #d9d9d9;
+  color: black;
+  font-family: Source Code Pro
+}
+
+.warning{
+  color: red;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.highlight{
+  background-color: gold
+}
+```
+
 ## chronicle
 An opinionated assistant that makes R Markdown reports for you.
 
@@ -44,7 +83,7 @@ demo_report <-
 
 --
 
-```{r, message=FALSE, warning=FALSE, eval=TRUE}
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
 render_report(demo_report)
 ```
 
@@ -74,43 +113,13 @@ demo_report
 
 --
 
-
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.alt='The variable demo_report reveals itself to be a character string containing all the usual content you would expect looking at the content of an R Markdown file: backticks and brackets opening and closing R code chunks, numeral symbols specifying headers, and plain text inbetween code chunks.'}
 knitr::include_graphics('demo_report.png', dpi = 250)
 ```
 
 ---
-.pull-left[
-### chronicle
-```{r, message=FALSE, eval=FALSE}
-demo_report <-
-  add_table(...) %>%
-  add_raincloud(...) %>% 
-  add_text(...) %>%
-  add_boxplot(...)
-```
-]
 
-.pull-right[
-### R Markdown
-```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.alt='The same printing of the demo report, showing how it contains the text of an R Markdown report corresponding to the elements specified through the add_ family of functions.'}
-knitr::include_graphics('demo_report.png', dpi = 250, )
-```
-]
-
-
----
-
-```{css, echo=FALSE}
-.code{
-  background-color: #f8f8f8;
-    color: black;
-}
-```
-
-
-
-## .code[make] family of functions
+## make_   family of functions
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, eval=FALSE, fig.alt='An html widget embedded into the presentation, containing three separated groups of interactive boxplots, one group for each species. Inside each group, there are three box plots, one for female, male and NA sex values.'}
 chronicle::make_boxplot(dt = palmerpenguins::penguins,
@@ -138,9 +147,20 @@ widgetframe::frameWidget(chronicle::make_boxplot(dt = palmerpenguins::penguins,
 
 ---
 
-class: chapter-slide
+## make_ family of functions
 
-# but please do learn ggplot2!
+```{r, echo=TRUE, message=FALSE, warning=FALSE, eval=FALSE, fig.alt='An html widget embedded into the presentation, containing three separated groups of interactive boxplots, one group for each species. Inside each group, there are three box plots, one for female, male and NA sex values.'}
+chronicle::make_boxplot(dt = palmerpenguins::penguins,
+                        value = 'body_mass_g',
+                        groups = 'island',
+                        split_groups_by = 'sex',
+                        jitter = TRUE,
+                        plot_palette_generator = 'viridis',
+                        static = FALSE)
+```
+
+
+.warning[But please do learn ggplot2!]
 
 ---
 
@@ -165,68 +185,39 @@ render_report(report = lab_report,
               title = paste('Lab Observations', Sys.Date()), 
               filename = paste('lab_observations', Sys.Date()))
 ```
---
-Careful! Being messy is bad!
+
+
 ---
 
-### Rendering
-
-.code[render_report()] lets you customize:
+### Rendering Options
 
 - File name (default is a generic name with date)
---
-
 - Title and author
---
-
 - Include date
---
-
 - Directory for the output
---
-
 - Output format (several at a time)
---
-
 - Keep the .Rmd file it wrote
---
-
 - Render the report or not
---
-
 - Include table of contents (when formats allow it)
---
-
 - Table of content depth
---
-
 - Number the sections
---
-
 - Figure width and height
---
-
 - Plot pallete
---
-
 - Plot palette generator (viridis)
---
-
 - Themes
   - html_theme
   - rmdformats
   - prettydoc
   - Microsoft Word and PowerPoint reference files
---
 
-- Experimental but for you: custom output YAML specifications
-
+--- 
 ---
+
 ## Output formats
+
 .pull-left[
 ### Interactive
 -   bookdown
--   github_document
 -   html_document
 -   html_notebook
 -   ioslides
@@ -238,6 +229,7 @@ Careful! Being messy is bad!
 
 .pull-right[
 ### Static
+-   github_document
 -   pagedown
 -   pdf
 -   powerpoint_presentation
@@ -247,38 +239,13 @@ Careful! Being messy is bad!
 ]
 ---
 
-## YAML header
-
-.pull-left[
-```{r, message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
-output_config('rmdformats')
-```
-
-```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.alt='The YAML header corresponding to the configuration of an RMD Formats output. The key point in here is that the global parameter ste_static is equal to FALSE, since this output can support dynamic html widgets'}
-knitr::include_graphics('output_rmdformats.png', dpi = 150)
-```
-]
-
-.pull-right[
-```{r, message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE, fig.alt='The YAML header corresponding to the configuration of a Word document output. The key point in here is that the global parameter ste_static is equal to TRUE, since this output cannot support dynamic html widgets'}
-output_config('word_document',
-              docx_reference_file = 'lab_template.docx')
-```
-
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-knitr::include_graphics('output_word.png', dpi = 150)
-```
-]
-
----
-
 ## report_columns()
-```{r, eval=TRUE, message=FALSE, warning=FALSE}
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
 report_columns(palmerpenguins::penguins)
 ```
 
 --
-```{r, eval=TRUE, message=FALSE, warning=FALSE}
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
 report_columns(palmerpenguins::penguins, 
                by_column = 'species')
 ```
@@ -332,13 +299,24 @@ add_code(code = 'corrplot::corrplot(cor(mtcars))', eval = TRUE)
 --
 
 ```{r echo=FALSE}
-add_code(code = 'corrplot::corrplot(cor(mtcars))', eval = TRUE)
+substring(add_code(code = 'corrplot::corrplot(cor(mtcars))', eval = TRUE),3)
 ```
+
+
+
 
 ---
 
-## Thank you!
 
-github.com/pheymanss/chronicle
+class: chapter-slide
 
-@pheymanss
+# Thank you!
+
+.white[
+Reach out [@pheymanss](https://twitter.com/pheymanss)
+
+- Package repository - https://github.com/pheymanss/chronicle
+
+- Full showcase of chronicle elements - https://pheymanss.github.io/chronicle-demos/showcase
+
+]
